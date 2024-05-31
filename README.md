@@ -83,7 +83,14 @@ You can now start asking the bot questions in chat using the "!q" followed by a 
 <br>
 The bot will then process the question and add it to a queue. For each question, a request is made to OpenAI twice. Once for generating an AI response and again to convert the response to audio. We will then retrieve the response audio and process the queue.
 
-### Whats with the text files?
+## Which Audio Device To Use
+In order to play the audio correctly, we need the correct audio device output. You can find the audio output devices on your system by running **'device_check.py'**.
+```bash
+python device_check.py
+```
+This should show you ALL the outputs on your system. It is up to you to choose the correct one and update the config accordingly. I seperated the audio devices for use with OBS, but you can always use the same one for both the question and response.
+
+## Whats with the text files?
 
 The text files are setup in a way to use them as sources in OBS Studio. This is will allow you to show the questions and answers on stream in real time. When a question is processed, we add the question to 'question.txt' and update 'queue.txt' to show how many questions are in queue. Once a response is returned, we then add that to 'response.txt'. If you set these files to sources in OBS, it will update automatically. After a response is played, it will clear the files and update the 'queue.txt' accordingly. 
 <br><br>
@@ -92,7 +99,7 @@ Set **'Positional Alignment'** and **'Alignment In Bounding Box'** to **'Center'
 Set **'Bounding Box Type'** to **'Scale To Inner Bounds'**.<br><br>
 Now, you can make the text box the size you want, and the text will always stay within that box. Play around for better results!
 
-### Obtaining an OpenAI API Key
+## Obtaining an OpenAI API Key
 
 To use OpenAI's API, you'll need to obtain an API key from the OpenAI platform. Here's how to get started:
 
