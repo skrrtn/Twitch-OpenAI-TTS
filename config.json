@@ -1,0 +1,28 @@
+{
+    "twitch": {
+      "server": "irc.chat.twitch.tv",
+      "port": 6667,
+      "nickname": "your_bot_nickname",
+      "token": "oauth:xxxxxxxxxx",
+      "channel": "#your_channel",
+      "bad_word_filter_enabled": true,
+      "timeout_seconds": 600
+    },
+    "openai": {
+      "api_key": "sk-proj-xxxxxxxxxx",
+      "system_message": "My name is Jeff",
+      "model": "gpt-3.5-turbo",
+      "tts_model": "tts-1",
+      "voice": "fable"
+    },
+    "system": {
+      "question_tts_device_id": 0,
+      "response_tts_device_id": 1
+    },
+    "limits": {
+      "user_question_interval": 30,
+      "char_limit": 250,
+      "random_questions_enabled": true,
+      "random_question_idle_time": 60
+    }
+}
