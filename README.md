@@ -78,6 +78,19 @@ Run the script `main.py` to start the Twitch bot:
 ```bash
 python main.py
 ```
+You can now start asking the bot questions in chat using the "!q" followed by a question.
+> !q What does blue taste like?
+<br>
+The bot will then process the question and add it to a queue. For each question, a request is made to OpenAI twice. Once for generating an AI response and again to convert the response to audio. We will then retrieve the response audio and process the queue.
+
+### Whats with the text files?
+
+The text files are setup in a way to use them as sources in OBS Studio. This is will allow you to show the questions and answers on stream in real time. When a question is processed, we add the question to 'question.txt' and update 'queue.txt' to show how many questions are in queue. Once a response is returned, we then add that to 'response.txt'. If you set these files to sources in OBS, it will update automatically. After a response is played, it will clear the files and update the 'queue.txt' accordingly. 
+<br><br>
+Good practice for showing the text effeciently, right click the text source and **'Edit Transform'** *(or CTRL-E)*.<br>
+Set **'Positional Alignment'** and **'Alignment In Bounding Box'** to **'Center'**.<br>
+Set **'Bounding Box Type'** to **'Scale To Inner Bounds'**.<br><br>
+Now, you can make the text box the size you want, and the text will always stay within that box. Play around for better results!
 
 ### Obtaining an OpenAI API Key
 
@@ -93,11 +106,8 @@ To use OpenAI's API, you'll need to obtain an API key from the OpenAI platform. 
 To connect the bot to your Twitch channel, you'll need to generate an OAuth token. Here's how to do it:
 
 1. **Visit the Twitch Chat OAuth Password Generator**: Go to [Twitch Chat OAuth Password Generator](https://twitchapps.com/tmi/) in your web browser. Make sure you are already logged in to your Twitch account.
-
 2. **Click "Connect"**: Once on the website, simply click the "Connect" button. This will authorize the application to access your Twitch account for chat purposes.
-
 3. **Copy the Token**: After clicking "Connect", you'll be redirected back to the website, and you should see your OAuth token displayed. Copy this token securely.
-
 4. **Use the Token in the Config**: Paste the copied OAuth token into the `token` field under the `twitch` section of your `config.json` file. Set the `nickname` field to your Twitch username.
 
 ## License
