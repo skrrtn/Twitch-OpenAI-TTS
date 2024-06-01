@@ -79,10 +79,12 @@ class IRCClient:
 
     def handle_message(self, message):
         print(f"Received message: {message.strip()}")
-        match = re.match(r'^:(\w+)!.* PRIVMSG #\w+ :!q (.+)', message)
-        if match:
-            username = match.group(1)
-            question = match.group(2).strip()
+        match_q = re.match(r'^:(\w+)!.* PRIVMSG #\w+ :!q (.+)', message)
+        match_git = re.match(r'^:(\w+)!.* PRIVMSG #\w+ :!git', message)
+        
+        if match_q:
+            username = match_q.group(1)
+            question = match_q.group(2).strip()
 
             if self.bad_word_filter_enabled:
                 for bad_word in bad_words:
@@ -108,6 +110,10 @@ class IRCClient:
             self.user_last_question_time[username] = current_time
             self.question_queue.put((username, question))
             print(f"Queued question from {username}: {question}")
+            
+        elif match_git:
+            username = match_git.group(1)
+            self.sock.send(f"PRIVMSG {self.channel} :@{username} Here is the link to the GitHub repo: https://github.com/skrrtn/Twitch-OpenAI-TTS \n".encode('utf-8'))
 
 class QuestionQueue:
     def __init__(self):
@@ -276,7 +282,6 @@ def main():
             )
             if response:
                 print(f"Generated response: {response}")
-                play_question(question, tts_device_id_question, username=username)
                 save_answer(response)
                 audio_filename = generate_speech(
                     response, 
@@ -285,6 +290,7 @@ def main():
                     'response.wav'
                 )
                 if audio_filename:
+                    play_question(question, tts_device_id_question, username=username)
                     play_tts(audio_filename, tts_device_id_response)
                     clear_text_files()
                     last_tts_time = datetime.now()
