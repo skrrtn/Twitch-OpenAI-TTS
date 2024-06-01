@@ -102,9 +102,9 @@ Set **`Bounding Box Type`** to **`Scale To Inner Bounds`**.<br><br>
 Now, you can make the text box the size you want, and the text will always stay within that box. Play around for better results!
 
 ## Which Audio Device To Use
-In order to play the audio correctly, we need the correct audio device output. You can find the audio output devices on your system by running **`device_check.py`**.
+In order to play the audio correctly, we need the correct audio device output. You can find the audio output devices on your system by running this code.
 ```bash
-python device_check.py
+python -m sounddevice
 ```
 This should show you ALL the outputs on your system. It is up to you to choose the correct one and update the config accordingly. I seperated the audio devices for use with OBS, but you can always use the same one for both the question and response.
 
