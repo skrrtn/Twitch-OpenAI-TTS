@@ -23,6 +23,12 @@ Your mileage my vary depending which model, TTS engine and prompts you use!
 - 🚫 **Bad Word Filtering**: Maintain a clean chat environment by filtering out inappropriate language.
 - ⚙️ **Configurability**: Easily configure various aspects of the bot, such as Twitch credentials, OpenAI API settings, system options, and limits.
 
+## Future Plans
+
+- [ ] Ability to change prompt in realtime for admins/mods in chat using `!prompt` command.
+- [ ] Better bad word filtering.
+- [ ] Get a real job.
+
 ## Installation
 
 1. **Clone this repository**:
