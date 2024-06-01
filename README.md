@@ -27,6 +27,9 @@ Your mileage my vary depending which model, TTS engine and prompts you use!
 
 - [ ] Ability to change prompt in realtime for admins/mods in chat using `!prompt` command.
 - [ ] Better bad word filtering.
+- [ ] Ability to use OpenAI assistants for better customization of responses.
+- [ ] Better queue system.
+- [ ] Better code optimization.
 - [ ] Get a real job.
 
 ## Installation
