@@ -11,8 +11,6 @@ import time
 import sounddevice as sd
 import soundfile as sf
 import pyttsx3
-import pyaudio
-import wave
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -84,7 +82,7 @@ class IRCClient:
         match = re.match(r'^:(\w+)!.* PRIVMSG #\w+ :!q (.+)', message)
         if match:
             username = match.group(1)
-            question = match.group(2).strip().lower()
+            question = match.group(2).strip()
 
             if self.bad_word_filter_enabled:
                 for bad_word in bad_words:
@@ -183,12 +181,36 @@ def generate_speech(response, tts_model, voice, filename):
         return None
     
 def save_question(question):
+    question = ''.join(char for char in question if ord(char) < 128)
+    
+    lines = []
+    current_line = ""
+    for word in question.split():
+        if len(current_line) + len(word) <= 45:
+            current_line += word + " "
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+
     with open('question.txt', 'w', encoding='utf-8') as f:
-        f.write(question)
+        f.write("\n".join(lines))
 
 def save_answer(answer):
-    with open('response.txt', 'w', encoding='utf-8') as f:
-        f.write(answer)
+    lines = []
+    current_line = ""
+    for word in answer.split():
+        if len(current_line) + len(word) <= 45:
+            current_line += word + " "
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+
+    with open('response.txt', 'w', encoding='utf-8') as f: 
+        f.write("\n".join(lines))
 
 def clear_text_files():
     if os.path.exists("question.txt"):
@@ -202,31 +224,20 @@ def play_tts(filename, device_id):
     sd.wait()
     os.remove(filename)
 
-def play_question(question, device_id):
+def play_question(question, device_id, username=None):
     engine = pyttsx3.init()
     engine.setProperty('rate', 130)
     engine.setProperty('volume', 0.85)
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[0].id)
+    if username:
+        question = f"{username} asks, {question}"
     engine.save_to_file(question, 'temp.wav')
     engine.runAndWait()
 
-    p = pyaudio.PyAudio()
-    wf = wave.open('temp.wav', 'rb')
-    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                    channels=wf.getnchannels(),
-                    rate=wf.getframerate(),
-                    output=True,
-                    output_device_index=device_id)
-    data = wf.readframes(1024)
-    while data:
-        stream.write(data)
-        data = wf.readframes(1024)
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-    
-    wf.close()
+    data, fs = sf.read('temp.wav')
+    sd.play(data, fs, device=device_id)
+    sd.wait()
     os.remove('temp.wav')
 
 def update_queue_file(question_queue):
@@ -265,6 +276,7 @@ def main():
             )
             if response:
                 print(f"Generated response: {response}")
+                play_question(question, tts_device_id_question, username=username)
                 save_answer(response)
                 audio_filename = generate_speech(
                     response, 
