@@ -126,6 +126,13 @@ To connect the bot to your Twitch channel, you'll need to generate an OAuth toke
 3. **Copy the Token**: After clicking "Connect", you'll be redirected back to the website, and you should see your OAuth token displayed. Copy this token securely.
 4. **Use the Token in the Config**: Paste the copied OAuth token into the `token` field under the `twitch` section of your `config.json` file. Set the `nickname` field to your Twitch username.
 
+## Things To Consider!
+To limit the amount of TTS usage it is recommended to tell OpenAI to not send twenty paragraphs worth of data to process. Easiest way to do this is to include it in your `system_message` like so:
+```json
+"system_message": "You are a robot named Mark. You love pie. Keep your response around three small sentences."
+```
+This method is the easiest way to limit responses and TTS generation.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
